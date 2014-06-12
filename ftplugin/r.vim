@@ -6,15 +6,20 @@
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" SendFunction and RHelp still not lang agnostic
+
+
 
 " linked to RavenSendSelection()
-let g:source_send_selection = 'source("' . g:raven_tmp_file . '" , echo = TRUE)'
+
+if g:raven_source_send
+    let g:source_send_selection = 'source("' . g:raven_tmp_file . '" , echo = TRUE)'
+endif
+
 let s:filetype_lang = "R"
 let s:quit_lang = 'q(save = "no")'
 let s:source_current_file = 'source("' . expand('%:p') . '")'
 let s:source_load_file = 'source("load.R")'
-
-" SendFunction and RHelp still not lang agnostic
 
 
 
@@ -68,7 +73,8 @@ endfunction
 function! RavenOpenR()
     let save_cursor = getpos(".")
     call RavenOpenPane()
-    call RavenSendText(s:filetype_lang)
+    call RavenSendKeys(s:filetype_lang)
+    call RavenSendKeys("Enter")
     call setpos('.', save_cursor)
 endfunction
 
@@ -79,10 +85,10 @@ endfunction
 " -----------------------------------
 " RavenQuitR {{{
 " -----------------------------------
-" TODO close pane also??
 function! RavenQuitR()
     let save_cursor = getpos(".")
-    call RavenSendText(s:quit_lang)
+    call RavenSendKeys('"' . RavenEscText(s:quit_lang) . '"')
+    call RavenSendKeys("Enter")
     call RavenKillPane()
     call setpos('.', save_cursor)
 endfunction
@@ -115,7 +121,8 @@ endfunction
 " -----------------------------------
 function! RavenSourceFileR()
     let save_cursor = getpos(".")
-    call RavenSendText(s:source_current_file)
+    call RavenSendKeys('"' . RavenEscText(s:source_current_file) . '"')
+    call RavenSendKeys("Enter")
     call setpos('.', save_cursor)
 endfunction
 
@@ -128,7 +135,8 @@ endfunction
 " -----------------------------------
 function! RavenSourceLoadFileR()
     let save_cursor = getpos(".")
-    call RavenSendText(s:source_load_file)
+    call RavenSendKeys('"' . RavenEscText(s:source_load_file) . '"')
+    call RavenSendKeys("Enter")
     call setpos('.', save_cursor)
 endfunction
 
