@@ -10,8 +10,6 @@
 
 
 
-" linked to RavenSendSelection()
-
 if g:raven_source_send
     let g:source_send_selection = 'source("' . g:raven_tmp_file . '" , echo = TRUE)'
 endif
@@ -22,31 +20,7 @@ let s:source_current_file = 'source("' . expand('%:p') . '")'
 let s:source_load_file = 'source("load.R")'
 
 
-
-" -----------------------------------
-" Mappings {{{
-" -----------------------------------
-if g:raven_map_keys
-
-    nnoremap <silent> <leader>rf :call RavenOpenR()<CR>
-    nnoremap <silent> <leader>rq :call RavenQuitR()<CR>
-    nnoremap <silent> <leader>rs :call RavenSourceFileR()<CR>
-    nnoremap <silent> <leader>rl :call RavenSourceLoadFileR()<CR>
-    nnoremap <silent> <leader>f  :call RavenFunctionR()<CR>
-    nnoremap <silent> <leader>rh :call RavenHelpWordR()<CR>
-    nnoremap <silent> <leader>rH :call RavenHelpPromptR()<CR>
-
-endif
-
-
-" }}}
-
-
-
-" -----------------------------------
-" RavenHelpPromptR {{{
-" -----------------------------------
-function! RavenHelpPromptR()
+function! s:RavenHelpPromptR()
     let save_cursor = getpos(".")
     call inputsave()
     let fun = input('Enter Function: ')
@@ -55,7 +29,8 @@ function! RavenHelpPromptR()
     call setpos('.', save_cursor)
 endfunction
 
-function! RavenHelpWordR()
+
+function! s:RavenHelpWordR()
     let save_cursor = getpos(".")
     let fun = expand("<cword>")
     execute "!Rscript -e" . ' "help(' . fun . ')"'
@@ -63,44 +38,16 @@ function! RavenHelpWordR()
 endfunction
 
 
-" }}}
-
-
-
-" -----------------------------------
-" RavenOpenR {{{
-" -----------------------------------
-function! RavenOpenR()
+function! s:RavenOpenR()
     let save_cursor = getpos(".")
     call RavenOpenPane()
-    call RavenSendKeys(s:filetype_lang)
+    call RavenSendText(s:filetype_lang)
     call RavenSendKeys("Enter")
     call setpos('.', save_cursor)
 endfunction
 
 
-" }}}
-
-
-" -----------------------------------
-" RavenQuitR {{{
-" -----------------------------------
-function! RavenQuitR()
-    let save_cursor = getpos(".")
-    call RavenSendKeys('"' . RavenEscText(s:quit_lang) . '"')
-    call RavenSendKeys("Enter")
-    call RavenKillPane()
-    call setpos('.', save_cursor)
-endfunction
-
-
-" }}}
-
-
-" -----------------------------------
-" RavenFunctionR {{{
-" -----------------------------------
-function! RavenFunctionR()
+function! s:RavenFunctionR()
     let save_cursor = getpos(".")
     execute 'normal! ?' . "<- function(" . "\<CR>"
     normal! ^
@@ -113,36 +60,39 @@ function! RavenFunctionR()
 endfunction
 
 
-" }}}
-
-
-" -----------------------------------
-" RavenSourceFileR {{{
-" -----------------------------------
-function! RavenSourceFileR()
+function! s:RavenSourceFileR()
     let save_cursor = getpos(".")
-    call RavenSendKeys('"' . RavenEscText(s:source_current_file) . '"')
+    call RavenSendText('"' . RavenEscText(s:source_current_file) . '"')
     call RavenSendKeys("Enter")
     call setpos('.', save_cursor)
 endfunction
 
 
-" }}}
-
-
-" -----------------------------------
-" RavenSourceLoadFileR {{{
-" -----------------------------------
-function! RavenSourceLoadFileR()
+function! s:RavenSourceLoadFileR()
     let save_cursor = getpos(".")
-    call RavenSendKeys('"' . RavenEscText(s:source_load_file) . '"')
+    call RavenSendText('"' . RavenEscText(s:source_load_file) . '"')
     call RavenSendKeys("Enter")
     call setpos('.', save_cursor)
 endfunction
 
 
-" }}}
 
+nnoremap <silent> <Plug>RavenOpenR :call <SID>RavenOpenR()<CR>
+nnoremap <silent> <Plug>RavenSourceFileR :call <SID>RavenSourceFileR()<CR>
+nnoremap <silent> <Plug>RavenSourceLoadFileR :call <SID>RavenSourceLoadFileR()<CR>
+nnoremap <silent> <Plug>RavenFunctionR :call <SID>RavenFunctionR()<CR>
+nnoremap <silent> <Plug>RavenHelpWordR :call <SID>RavenHelpWordR()<CR>
+nnoremap <silent> <Plug>RavenHelpPromptR :call <SID>RavenHelpPromptR()<CR>
+
+
+if !exists('g:raven_map_keys') || g:raven_map_keys
+    nmap <leader>ro <Plug>RavenOpenR
+    nmap <leader>rs <Plug>RavenSourceFileR
+    nmap <leader>rl <Plug>RavenLoadFileR
+    nmap <leader>rf <Plug>RavenFunctionR
+    nmap <leader>rh <Plug>RavenHelpWordR
+    nmap <leader>rH <Plug>RavenHelpPrompR
+endif
 
 
 
