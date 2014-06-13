@@ -8,9 +8,7 @@ if g:raven_source_send
 endif
 
 let s:filetype_lang = "R"
-let s:quit_lang = 'q(save = "no")'
 let s:source_current_file = 'source("' . expand('%:p') . '")'
-let s:source_load_file = 'source("load.R")'
 let s:clear_console = 'system("clear")'
 " SendFunction and RHelp are not lang agnostic
 
