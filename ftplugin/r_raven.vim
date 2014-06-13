@@ -3,6 +3,11 @@
 
 
 
+" if exists('g:loaded_raven') || &cp || v:version < 700
+"   finish
+" endif
+
+
 if g:raven_source_send
     let g:source_send_selection = 'source("' . g:raven_tmp_file . '" , echo = TRUE)'
 endif
@@ -10,6 +15,7 @@ endif
 let s:filetype_lang = "R"
 let s:source_current_file = 'source("' . expand('%:p') . '")'
 let s:clear_console = 'system("clear")'
+let s:set_work_directory = 'setwd("' . expand('%:p:h') . '")'
 " SendFunction and RHelp are not lang agnostic
 
 
@@ -24,22 +30,43 @@ endfunction
 
 
 function! s:RavenOpenR()
+    if !exists("g:raven_pane_id") 
+        call RavenPromptPane()
+    else
+        let save_cursor = getpos(".")
+        call RavenSendText(s:filetype_lang)
+        call setpos('.', save_cursor)
+    endif
+endfunction
+
+
+function! s:RavenSetWorkDirR()
+    if !exists("g:raven_pane_id")
+        echo "No Raven Pane Selected"
+        return
+    endif
     let save_cursor = getpos(".")
-    call RavenOpenPane()
-    call RavenSendText(s:filetype_lang)
-    call RavenSendKeys("Enter")
+    call RavenSendText(s:set_work_directory)
     call setpos('.', save_cursor)
 endfunction
 
 
 function! s:RavenClearR()
+    if !exists("g:raven_pane_id")
+        echo "No Raven Pane Selected"
+        return
+    endif
     let save_cursor = getpos(".")
-    call RavenSend(s:clear_console)
+    call RavenSendText(s:clear_console)
     call setpos('.', save_cursor)
 endfunction
 
 
 function! s:RavenFunctionR()
+    if !exists("g:raven_pane_id")
+        echo "No Raven Pane Selected"
+        return
+    endif
     let save_cursor = getpos(".")
     call search('function(', 'bc')
     normal! V
@@ -52,8 +79,12 @@ endfunction
 
 
 function! s:RavenSourceFileR()
+    if !exists("g:raven_pane_id")
+        echo "No Raven Pane Selected"
+        return
+    endif
     let save_cursor = getpos(".")
-    call RavenSend(s:source_current_file)
+    call RavenSendText(s:source_current_file)
     call setpos('.', save_cursor)
 endfunction
 
@@ -64,14 +95,16 @@ nnoremap <silent> <Plug>RavenSourceFileR :call <SID>RavenSourceFileR()<CR>
 nnoremap <silent> <Plug>RavenFunctionR :call <SID>RavenFunctionR()<CR>
 nnoremap <silent> <Plug>RavenHelpPromptR :call <SID>RavenHelpPromptR()<CR>
 nnoremap <silent> <Plug>RavenClearR :call <SID>RavenClearR()<CR>
+nnoremap <silent> <Plug>RavenSetWorkDirR :call <SID>RavenSetWorkDirR()<CR>
 
 
 if !exists('g:raven_map_keys') || g:raven_map_keys
     nmap <leader>ro <Plug>RavenOpenR
-    nmap <leader>rs <Plug>RavenSourceFileR
+    nmap <leader>ri <Plug>RavenSourceFileR
     nmap <leader>rf <Plug>RavenFunctionR
     nmap <leader>rh <Plug>RavenHelpPromptR
     nmap <leader>rc <Plug>RavenClearR
+    nmap <leader>rw <Plug>RavenSetWorkDirR
 endif
 
 
