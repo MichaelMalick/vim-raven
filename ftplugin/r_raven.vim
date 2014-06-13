@@ -1,11 +1,8 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim-raven
-"
-" Maintainer: Michael Malick <malickmj@gmail.com>
-"
-"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ftplugin/r_raven.vim
+" Author: Michael Malick <malickmj@gmail.com>
+
+
+
 " SendFunction and RHelp still not lang agnostic
 
 

@@ -1,19 +1,8 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim-raven
-"
-" Maintainer: Michael Malick <malickmj@gmail.com>
-"
-"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 
-" TODO
-"   - Julia support
-"   - Pane number doesn't update if layout changes
-"       - Tmux re-index pane number when new panes are created
-"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" raven.vim - Send code to tmux pane
+" Author:     Michael Malick <malickmj@gmail.com>
+" Version:    0.0.1
+
+
 
 if exists('g:loaded_raven') || &cp || v:version < 700
   finish
@@ -106,9 +95,10 @@ endfunction
 " Utility Function {{{
 " -----------------------------------
 function! RavenSendText(text)
-    " include the literal flag so Tmux keywords aren't looked up
+    " include the literal flag so Tmux keywords are not looked up
     call system("tmux send-keys -l -t " . s:raven_target . " " . a:text)
 endfunction
+
 
 function! RavenSendKeys(keys)
     call system("tmux send-keys -t " . "1" . " " . a:keys)
@@ -134,6 +124,8 @@ endfunction
 
 
 function! s:RavenTmuxInfo()
+    " Pane number doesn't update if layout changes
+    " Tmux re-indexes pane number when new panes are created
     let s:raven_pane_number = substitute(system('tmux display-message -p "#P"'), '\n$', '','')
     let s:raven_window_number = substitute(system('tmux display-message -p "#I"'), '\n$', '','')
     let s:raven_session_number = substitute(system('tmux display-message -p "#S"'), '\n$', '','')
@@ -144,9 +136,6 @@ endfunction
 
 
 
-" -----------------------------------
-" Mappings {{{
-" -----------------------------------
 " need <c-u> to clear selection brackets (i.e., '<,'>) before calls
 nnoremap <silent> <Plug>RavenOpenPane :<c-u> call RavenOpenPane()<CR>
 nnoremap <silent> <Plug>RavenKillPane :<c-u> call RavenKillPane()<CR>
@@ -156,16 +145,12 @@ nnoremap <silent> <Plug>RavenSendParagraph :<c-u> call RavenSendParagraph()<CR>
 
 
 if !exists('g:raven_map_keys') || g:raven_map_keys
-    " need <c-u> to clear selection brackets (i.e., '<,'>) before calls
     nmap <leader>ro  <Plug>RavenOpenPane
     nmap <leader>rq  <Plug>RavenKillPane
-    nmap <leader>rd   <Plug>RavenSendLine
-    vmap <leader>rs   <Plug>RavenSendSelection
-    nmap <leader>rs   <Plug>RavenSendParagraph
+    nmap <leader>rd  <Plug>RavenSendLine
+    vmap <leader>rs  <Plug>RavenSendSelection
+    nmap <leader>rs  <Plug>RavenSendParagraph
 endif
-
-" }}}
-
 
 
 
