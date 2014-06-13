@@ -16,7 +16,6 @@ let g:raven_source_send = 0
 
 
 
-
 " -----------------------------------
 " Mapped Function {{{
 " -----------------------------------
@@ -100,6 +99,7 @@ function! RavenSend(text)
     call system("tmux send-keys -l -t " . s:raven_target . " " . esc_text)
     call RavenSendKeys("Enter")
 endfunction
+
 
 function! RavenSendText(text)
     " include the literal flag so Tmux keywords are not looked up

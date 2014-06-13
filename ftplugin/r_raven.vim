@@ -3,10 +3,6 @@
 
 
 
-" SendFunction and RHelp still not lang agnostic
-
-
-
 if g:raven_source_send
     let g:source_send_selection = 'source("' . g:raven_tmp_file . '" , echo = TRUE)'
 endif
@@ -16,6 +12,7 @@ let s:quit_lang = 'q(save = "no")'
 let s:source_current_file = 'source("' . expand('%:p') . '")'
 let s:source_load_file = 'source("load.R")'
 let s:clear_console = 'system("clear")'
+" SendFunction and RHelp are not lang agnostic
 
 
 function! s:RavenHelpPromptR()
@@ -23,14 +20,6 @@ function! s:RavenHelpPromptR()
     call inputsave()
     let fun = input('Enter Function: ')
     call inputrestore()
-    execute "!Rscript -e" . ' "help(' . fun . ')"'
-    call setpos('.', save_cursor)
-endfunction
-
-
-function! s:RavenHelpWordR()
-    let save_cursor = getpos(".")
-    let fun = expand("<cword>")
     execute "!Rscript -e" . ' "help(' . fun . ')"'
     call setpos('.', save_cursor)
 endfunction
@@ -54,10 +43,9 @@ endfunction
 
 function! s:RavenFunctionR()
     let save_cursor = getpos(".")
-    execute 'normal! ?' . "<- function(" . "\<CR>"
-    normal! ^
-    normal! v
-    execute 'normal! /' . "{" . "\<CR>"
+    call search('function(', 'bc')
+    normal! V
+    call search('{')
     normal! %
     call RavenSendSelection()
     execute "normal! \<Esc>"
@@ -76,7 +64,6 @@ endfunction
 nnoremap <silent> <Plug>RavenOpenR :call <SID>RavenOpenR()<CR>
 nnoremap <silent> <Plug>RavenSourceFileR :call <SID>RavenSourceFileR()<CR>
 nnoremap <silent> <Plug>RavenFunctionR :call <SID>RavenFunctionR()<CR>
-nnoremap <silent> <Plug>RavenHelpWordR :call <SID>RavenHelpWordR()<CR>
 nnoremap <silent> <Plug>RavenHelpPromptR :call <SID>RavenHelpPromptR()<CR>
 nnoremap <silent> <Plug>RavenClearR :call <SID>RavenClearR()<CR>
 
@@ -85,8 +72,7 @@ if !exists('g:raven_map_keys') || g:raven_map_keys
     nmap <leader>ro <Plug>RavenOpenR
     nmap <leader>rs <Plug>RavenSourceFileR
     nmap <leader>rf <Plug>RavenFunctionR
-    nmap <leader>rh <Plug>RavenHelpWordR
-    nmap <leader>rH <Plug>RavenHelpPrompR
+    nmap <leader>rh <Plug>RavenHelpPromptR
     nmap <leader>rc <Plug>RavenClearR
 endif
 
