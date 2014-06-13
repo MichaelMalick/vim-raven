@@ -1,4 +1,4 @@
-" ftplugin/r_raven.vim
+" ftplugin/r_raven.vim - R support for raven
 " Author: Michael Malick <malickmj@gmail.com>
 
 
@@ -15,6 +15,7 @@ let s:filetype_lang = "R"
 let s:quit_lang = 'q(save = "no")'
 let s:source_current_file = 'source("' . expand('%:p') . '")'
 let s:source_load_file = 'source("load.R")'
+let s:clear_console = 'system("clear")'
 
 
 function! s:RavenHelpPromptR()
@@ -44,6 +45,13 @@ function! s:RavenOpenR()
 endfunction
 
 
+function! s:RavenClearR()
+    let save_cursor = getpos(".")
+    call RavenSend(s:clear_console)
+    call setpos('.', save_cursor)
+endfunction
+
+
 function! s:RavenFunctionR()
     let save_cursor = getpos(".")
     execute 'normal! ?' . "<- function(" . "\<CR>"
@@ -59,16 +67,7 @@ endfunction
 
 function! s:RavenSourceFileR()
     let save_cursor = getpos(".")
-    call RavenSendText('"' . RavenEscText(s:source_current_file) . '"')
-    call RavenSendKeys("Enter")
-    call setpos('.', save_cursor)
-endfunction
-
-
-function! s:RavenSourceLoadFileR()
-    let save_cursor = getpos(".")
-    call RavenSendText('"' . RavenEscText(s:source_load_file) . '"')
-    call RavenSendKeys("Enter")
+    call RavenSend(s:source_current_file)
     call setpos('.', save_cursor)
 endfunction
 
@@ -76,19 +75,19 @@ endfunction
 
 nnoremap <silent> <Plug>RavenOpenR :call <SID>RavenOpenR()<CR>
 nnoremap <silent> <Plug>RavenSourceFileR :call <SID>RavenSourceFileR()<CR>
-nnoremap <silent> <Plug>RavenSourceLoadFileR :call <SID>RavenSourceLoadFileR()<CR>
 nnoremap <silent> <Plug>RavenFunctionR :call <SID>RavenFunctionR()<CR>
 nnoremap <silent> <Plug>RavenHelpWordR :call <SID>RavenHelpWordR()<CR>
 nnoremap <silent> <Plug>RavenHelpPromptR :call <SID>RavenHelpPromptR()<CR>
+nnoremap <silent> <Plug>RavenClearR :call <SID>RavenClearR()<CR>
 
 
 if !exists('g:raven_map_keys') || g:raven_map_keys
     nmap <leader>ro <Plug>RavenOpenR
     nmap <leader>rs <Plug>RavenSourceFileR
-    nmap <leader>rl <Plug>RavenLoadFileR
     nmap <leader>rf <Plug>RavenFunctionR
     nmap <leader>rh <Plug>RavenHelpWordR
     nmap <leader>rH <Plug>RavenHelpPrompR
+    nmap <leader>rc <Plug>RavenClearR
 endif
 
 

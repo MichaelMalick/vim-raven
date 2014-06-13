@@ -94,6 +94,13 @@ endfunction
 " -----------------------------------
 " Utility Function {{{
 " -----------------------------------
+function! RavenSend(text)
+    " include the literal flag so Tmux keywords are not looked up
+    let esc_text = shellescape(a:text)
+    call system("tmux send-keys -l -t " . s:raven_target . " " . esc_text)
+    call RavenSendKeys("Enter")
+endfunction
+
 function! RavenSendText(text)
     " include the literal flag so Tmux keywords are not looked up
     call system("tmux send-keys -l -t " . s:raven_target . " " . a:text)
@@ -101,7 +108,7 @@ endfunction
 
 
 function! RavenSendKeys(keys)
-    call system("tmux send-keys -t " . "1" . " " . a:keys)
+    call system("tmux send-keys -t " . s:raven_target . " " . a:keys)
 endfunction
 
 
@@ -137,6 +144,7 @@ endfunction
 
 
 " need <c-u> to clear selection brackets (i.e., '<,'>) before calls
+nnoremap <silent> <Plug>RavenSend :<c-u> call RavenSend()<CR>
 nnoremap <silent> <Plug>RavenOpenPane :<c-u> call RavenOpenPane()<CR>
 nnoremap <silent> <Plug>RavenKillPane :<c-u> call RavenKillPane()<CR>
 nnoremap <silent> <Plug>RavenSendLine :<c-u> call RavenSendLine()<CR>
