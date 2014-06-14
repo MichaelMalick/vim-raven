@@ -11,7 +11,7 @@ endif
 let g:loaded_raven = 1
 let g:raven_split_pane_percent = 30
 let g:raven_tmp_file = "/tmp/vim-raven-tmp-file"
-let g:raven_source_send = 0
+let g:raven_source_send = 1
 
 
 " -----------------------------------

@@ -3,9 +3,9 @@
 
 
 
-" if !g:loaded_raven || &cp || v:version < 700
-"   finish
-" endif
+if !g:loaded_raven || &cp || v:version < 700
+  finish
+endif
 
 
 if g:raven_source_send
