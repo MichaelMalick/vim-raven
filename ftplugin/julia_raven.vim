@@ -3,9 +3,9 @@
 
 
 
-" if exists('g:loaded_raven') || &cp || v:version < 700
-"   finish
-" endif
+if !g:loaded_raven || &cp || v:version < 700
+  finish
+endif
 
 
 if g:raven_source_send
@@ -19,13 +19,13 @@ let s:set_work_directory = 'cd("' . expand('%:p:h') . '")'
 
 
 function! s:RavenOpenJulia()
-    if !exists("g:raven_pane_id") 
-        call RavenPromptPane()
-    else
-        let save_cursor = getpos(".")
-        call RavenSendText(s:filetype_lang)
-        call setpos('.', save_cursor)
+    if !exists("g:raven_pane_id")
+        echo "No Raven Pane Selected"
+        return
     endif
+    let save_cursor = getpos(".")
+    call RavenSendText(s:filetype_lang)
+    call setpos('.', save_cursor)
 endfunction
 
 
@@ -82,7 +82,7 @@ nnoremap <silent> <Plug>RavenSetWorkDirJulia :call <SID>RavenSetWorkDirJulia()<C
 
 
 if !exists('g:raven_map_keys') || g:raven_map_keys
-    nmap <leader>ro <Plug>RavenOpenJulia
+    nmap <leader>rr <Plug>RavenOpenJulia
     nmap <leader>ri <Plug>RavenSourceFileJulia
     nmap <leader>rf <Plug>RavenFunctionJulia
     nmap <leader>rc <Plug>RavenClearJulia

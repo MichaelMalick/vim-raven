@@ -1,6 +1,6 @@
 " raven.vim - Send code to tmux pane
 " Author:     Michael Malick <malickmj@gmail.com>
-" Version:    0.0.1
+" Version:    0.0.2
 
 
 
@@ -29,11 +29,19 @@ function! RavenPromptPane()
     call setline(3, '# Press 2 for a new vertical pane')
     call setline(4, "")
     normal! G
-    read !tmux list-panes -F '\#{pane_id}: \#{session_name}:\#{window_index}.\#{pane_index}: \#{window_name}: \#{pane_title} [\#{pane_width}x\#{pane_height}] \#{?pane_active,(active),}' -a | cat
+    read !tmux list-panes -F '\#{pane_id}: \#{session_name}:\#{window_index}.\#{pane_index}: \#{window_name}: \#{pane_title} [\#{pane_width}x\#{pane_height}] \#{?pane_active,(active) ,}' -a | cat
+
+    if exists("g:raven_pane_id")
+        call search(g:raven_pane_id)
+        exe 'normal! A(current)'
+        exe 'normal! ^'
+    else
+        call setpos(".", [0, 5, 0, 0])
+    endif
+
     setlocal bufhidden=wipe buftype=nofile
     setlocal nobuflisted nomodifiable noswapfile nowrap
     setlocal cursorline nocursorcolumn
-    call setpos(".", [0, 5, 0, 0])
     nnoremap <buffer> <silent> q :hide<CR>
     nnoremap <buffer> <silent> <Esc> :hide<CR>
     nnoremap <buffer> <silent> <Enter> :call RavenPickPane()<CR>
@@ -50,8 +58,8 @@ function! RavenSendSelection()
     endif
     call s:RavenSaveSelection()
     if exists("g:source_send_selection")
-        call RavenSendText('"' . RavenEscText(g:source_send_selection) . '"')
-        call RavenSendKeys("Enter")
+        call RavenSendText(g:source_send_selection)
+        call s:RavenSendKeys("Enter")
     else
         let g:select_text = readfile(g:raven_tmp_file)
         for i in g:select_text
@@ -98,6 +106,14 @@ endfunction
 " -----------------------------------
 " Utility Function {{{
 " -----------------------------------
+function! RavenSendText(text)
+    let send_text = '"' . s:RavenEscText(a:text) . '"'
+    " include the literal flag so Tmux keywords are not looked up
+    call system("tmux send-keys -l -t " . g:raven_pane_id . " " . send_text)
+    call s:RavenSendKeys("Enter")
+endfunction
+
+
 function! RavenPickPane()
     let line = getline(".")
     let pane_match = matchlist(line, '\(^[^ ]\+\)\: ')
@@ -117,21 +133,12 @@ function! RavenOpenPane(dir)
     hide
 endfunction
 
-
-function! RavenSendText(text)
-    let send_text = '"' . RavenEscText(a:text) . '"'
-    " include the literal flag so Tmux keywords are not looked up
-    call system("tmux send-keys -l -t " . g:raven_pane_id . " " . send_text)
-    call RavenSendKeys("Enter")
-endfunction
-
-
-function! RavenSendKeys(keys)
+function! s:RavenSendKeys(keys)
     call system("tmux send-keys -t " . g:raven_pane_id . " " . a:keys)
 endfunction
 
 
-function! RavenEscText(text)
+function! s:RavenEscText(text)
     let esc_text = escape(a:text, '"$;')
     return(esc_text)
 endfunction
@@ -148,19 +155,18 @@ function! s:RavenSaveSelection()
     call writefile(lines, g:raven_tmp_file)
 endfunction
 
-
-
 " }}}
 
 
 
-" " need <c-u> to clear selection brackets (i.e., '<,'>) before calls
+" need <c-u> to clear selection brackets (i.e., '<,'>) before calls
 nnoremap <silent> <Plug>RavenSend :<c-u> call RavenSend()<CR>
 nnoremap <silent> <Plug>RavenKillPane :<c-u> call RavenKillPane()<CR>
 nnoremap <silent> <Plug>RavenSendLine :<c-u> call RavenSendLine()<CR>
 vnoremap <silent> <Plug>RavenSendSelection :<c-u> call RavenSendSelection()<CR>
 nnoremap <silent> <Plug>RavenSendParagraph :<c-u> call RavenSendParagraph()<CR>
 nnoremap <silent> <Plug>RavenPromptPane :<c-u> call RavenPromptPane()<CR>
+
 
 if !exists('g:raven_map_keys') || g:raven_map_keys
     nmap <leader>ro  <Plug>RavenPromptPane

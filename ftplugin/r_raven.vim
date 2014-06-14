@@ -3,7 +3,7 @@
 
 
 
-" if exists('g:loaded_raven') || &cp || v:version < 700
+" if !g:loaded_raven || &cp || v:version < 700
 "   finish
 " endif
 
@@ -30,13 +30,13 @@ endfunction
 
 
 function! s:RavenOpenR()
-    if !exists("g:raven_pane_id") 
-        call RavenPromptPane()
-    else
-        let save_cursor = getpos(".")
-        call RavenSendText(s:filetype_lang)
-        call setpos('.', save_cursor)
+    if !exists("g:raven_pane_id")
+        echo "No Raven Pane Selected"
+        return
     endif
+    let save_cursor = getpos(".")
+    call RavenSendText(s:filetype_lang)
+    call setpos('.', save_cursor)
 endfunction
 
 
@@ -99,7 +99,7 @@ nnoremap <silent> <Plug>RavenSetWorkDirR :call <SID>RavenSetWorkDirR()<CR>
 
 
 if !exists('g:raven_map_keys') || g:raven_map_keys
-    nmap <leader>ro <Plug>RavenOpenR
+    nmap <leader>rr <Plug>RavenOpenR
     nmap <leader>ri <Plug>RavenSourceFileR
     nmap <leader>rf <Plug>RavenFunctionR
     nmap <leader>rh <Plug>RavenHelpPromptR
