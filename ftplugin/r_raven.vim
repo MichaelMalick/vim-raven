@@ -99,7 +99,7 @@ nnoremap <silent> <Plug>RavenSetWorkDirR :call <SID>RavenSetWorkDirR()<CR>
 
 
 if !exists('g:raven_map_keys') || g:raven_map_keys
-    nmap <leader>rr <Plug>RavenOpenR
+    nmap <leader>ro <Plug>RavenOpenR
     nmap <leader>ri <Plug>RavenSourceFileR
     nmap <leader>rf <Plug>RavenFunctionR
     nmap <leader>rh <Plug>RavenHelpPromptR

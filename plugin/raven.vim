@@ -24,7 +24,7 @@ function! RavenPromptPane()
         return
     endif
     belowright new
-    call setline(1, '# Enter: Select pane | Esc/q: Cancel | d: view pane numbers')
+    call setline(1, '# Enter: select pane | Esc/q: cancel | v: view pane numbers')
     call setline(2, '# Press 1 for a new horizontal pane')
     call setline(3, '# Press 2 for a new vertical pane')
     call setline(4, "")
@@ -45,7 +45,9 @@ function! RavenPromptPane()
     nnoremap <buffer> <silent> q :hide<CR>
     nnoremap <buffer> <silent> <Esc> :hide<CR>
     nnoremap <buffer> <silent> <Enter> :call RavenPickPane()<CR>
-    nnoremap <buffer> <silent> d :call system("tmux display-panes")<CR>
+    nnoremap <buffer> <silent> v :call system("tmux display-panes")<CR>
+    nnoremap <buffer> <silent> r :call RavenReloadPrompt()<CR>
+    nmap     <buffer> <silent> o :call RavenGoToPane()<CR>
     nnoremap <buffer> <silent> 1 :call RavenOpenPane('v')<CR>
     nnoremap <buffer> <silent> 2 :call RavenOpenPane('h')<CR>
 endfunction
@@ -115,14 +117,36 @@ endfunction
 
 
 function! RavenPickPane()
-    let line = getline(".")
-    let pane_match = matchlist(line, '\(^[^ ]\+\)\: ')
-    if len(pane_match) == 0
+    call RavenPaneMatch() 
+    if len(s:pane_match) == 0
         echo "Please select a pane with enter or exit with 'q'"
         return
     endif
-    let g:raven_pane_id = pane_match[1]
+    let g:raven_pane_id = s:pane_match[1]
     hide
+endfunction
+
+
+function! RavenGoToPane()
+    call RavenPaneMatch() 
+    if len(s:pane_match) == 0
+        echo "Please select a pane with enter or exit with 'q'"
+        return
+    endif
+    call system('tmux select-pane -t ' . s:pane_match[1])
+    hide
+endfunction
+
+
+function! RavenReloadPrompt()
+    hide
+    call RavenPromptPane()
+endfunction
+
+
+function! RavenPaneMatch()
+    let line = getline(".")
+    let s:pane_match = matchlist(line, '\(^[^ ]\+\)\: ')
 endfunction
 
 
@@ -132,6 +156,7 @@ function! RavenOpenPane(dir)
     call system("tmux last-pane")
     hide
 endfunction
+
 
 function! s:RavenSendKeys(keys)
     call system("tmux send-keys -t " . g:raven_pane_id . " " . a:keys)
@@ -169,7 +194,7 @@ nnoremap <silent> <Plug>RavenPromptPane :<c-u> call RavenPromptPane()<CR>
 
 
 if !exists('g:raven_map_keys') || g:raven_map_keys
-    nmap <leader>ro  <Plug>RavenPromptPane
+    nmap <leader>rr  <Plug>RavenPromptPane
     nmap <leader>rq  <Plug>RavenKillPane
     nmap <leader>rd  <Plug>RavenSendLine
     vmap <leader>rs  <Plug>RavenSendSelection
