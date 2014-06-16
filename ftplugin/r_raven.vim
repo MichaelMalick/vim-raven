@@ -62,7 +62,7 @@ function! s:RavenClearR()
 endfunction
 
 
-function! s:RavenFunctionR()
+function! s:RavenSendFunctionR()
     if !exists("g:raven_pane_id")
         echo "No Raven Pane Selected"
         return
@@ -92,7 +92,7 @@ endfunction
 
 nnoremap <silent> <Plug>RavenOpenR :call <SID>RavenOpenR()<CR>
 nnoremap <silent> <Plug>RavenSourceFileR :call <SID>RavenSourceFileR()<CR>
-nnoremap <silent> <Plug>RavenFunctionR :call <SID>RavenFunctionR()<CR>
+nnoremap <silent> <Plug>RavenSendFunctionR :call <SID>RavenSendFunctionR()<CR>
 nnoremap <silent> <Plug>RavenHelpPromptR :call <SID>RavenHelpPromptR()<CR>
 nnoremap <silent> <Plug>RavenClearR :call <SID>RavenClearR()<CR>
 nnoremap <silent> <Plug>RavenSetWorkDirR :call <SID>RavenSetWorkDirR()<CR>
@@ -101,7 +101,7 @@ nnoremap <silent> <Plug>RavenSetWorkDirR :call <SID>RavenSetWorkDirR()<CR>
 if !exists('g:raven_map_keys') || g:raven_map_keys
     nmap <leader>ro <Plug>RavenOpenR
     nmap <leader>ri <Plug>RavenSourceFileR
-    nmap <leader>rf <Plug>RavenFunctionR
+    nmap <leader>rf <Plug>RavenSendFunctionR
     nmap <leader>rh <Plug>RavenHelpPromptR
     nmap <leader>rc <Plug>RavenClearR
     nmap <leader>rw <Plug>RavenSetWorkDirR

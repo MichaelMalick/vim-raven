@@ -13,11 +13,10 @@ let g:raven_split_pane_percent = 30
 let g:raven_tmp_file = "/tmp/vim-raven-tmp-file"
 let g:raven_source_send = 1
 
-
 " -----------------------------------
 " Mapped Function {{{
 " -----------------------------------
-function! RavenPromptPane()
+function! RavenSelectPane()
     let session_number = system('tmux display-message -p "#S"')
     if len(session_number) > 5
         echo "Tmux Is Not Currently Running"
@@ -47,7 +46,6 @@ function! RavenPromptPane()
     nnoremap <buffer> <silent> <Enter> :call RavenPickPane()<CR>
     nnoremap <buffer> <silent> v :call system("tmux display-panes")<CR>
     nnoremap <buffer> <silent> r :call RavenReloadPrompt()<CR>
-    nmap     <buffer> <silent> o :call RavenGoToPane()<CR>
     nnoremap <buffer> <silent> 1 :call RavenOpenPane('v')<CR>
     nnoremap <buffer> <silent> 2 :call RavenOpenPane('h')<CR>
 endfunction
@@ -109,6 +107,10 @@ endfunction
 " Utility Function {{{
 " -----------------------------------
 function! RavenSendText(text)
+    if !exists("g:raven_pane_id")
+        echo "No Raven Pane Selected"
+        return
+    endif
     let send_text = '"' . s:RavenEscText(a:text) . '"'
     " include the literal flag so Tmux keywords are not looked up
     call system("tmux send-keys -l -t " . g:raven_pane_id . " " . send_text)
@@ -127,20 +129,9 @@ function! RavenPickPane()
 endfunction
 
 
-function! RavenGoToPane()
-    call RavenPaneMatch() 
-    if len(s:pane_match) == 0
-        echo "Please select a pane with enter or exit with 'q'"
-        return
-    endif
-    call system('tmux select-pane -t ' . s:pane_match[1])
-    hide
-endfunction
-
-
 function! RavenReloadPrompt()
     hide
-    call RavenPromptPane()
+    call RavenSelectPane()
 endfunction
 
 
@@ -183,6 +174,8 @@ endfunction
 " }}}
 
 
+command! -range=0 -complete=shellcmd -nargs=+ Raven call RavenSendText(<q-args>)
+
 
 " need <c-u> to clear selection brackets (i.e., '<,'>) before calls
 nnoremap <silent> <Plug>RavenSend :<c-u> call RavenSend()<CR>
@@ -190,11 +183,11 @@ nnoremap <silent> <Plug>RavenKillPane :<c-u> call RavenKillPane()<CR>
 nnoremap <silent> <Plug>RavenSendLine :<c-u> call RavenSendLine()<CR>
 vnoremap <silent> <Plug>RavenSendSelection :<c-u> call RavenSendSelection()<CR>
 nnoremap <silent> <Plug>RavenSendParagraph :<c-u> call RavenSendParagraph()<CR>
-nnoremap <silent> <Plug>RavenPromptPane :<c-u> call RavenPromptPane()<CR>
+nnoremap <silent> <Plug>RavenSelectPane :<c-u> call RavenSelectPane()<CR>
 
 
 if !exists('g:raven_map_keys') || g:raven_map_keys
-    nmap <leader>rr  <Plug>RavenPromptPane
+    nmap <leader>rr  <Plug>RavenSelectPane
     nmap <leader>rq  <Plug>RavenKillPane
     nmap <leader>rd  <Plug>RavenSendLine
     vmap <leader>rs  <Plug>RavenSendSelection

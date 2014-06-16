@@ -51,7 +51,7 @@ function! s:RavenClearJulia()
 endfunction
 
 
-function! s:RavenFunctionJulia()
+function! s:RavenSendFunctionJulia()
     let save_cursor = getpos(".")
     call search('function', 'bc')
     normal! ^V
@@ -76,7 +76,7 @@ endfunction
 
 nnoremap <silent> <Plug>RavenOpenJulia :call <SID>RavenOpenJulia()<CR>
 nnoremap <silent> <Plug>RavenSourceFileJulia :call <SID>RavenSourceFileJulia()<CR>
-nnoremap <silent> <Plug>RavenFunctionJulia :call <SID>RavenFunctionJulia()<CR>
+nnoremap <silent> <Plug>RavenSendFunctionJulia :call <SID>RavenSendFunctionJulia()<CR>
 nnoremap <silent> <Plug>RavenClearJulia :call <SID>RavenClearJulia()<CR>
 nnoremap <silent> <Plug>RavenSetWorkDirJulia :call <SID>RavenSetWorkDirJulia()<CR>
 
@@ -84,7 +84,7 @@ nnoremap <silent> <Plug>RavenSetWorkDirJulia :call <SID>RavenSetWorkDirJulia()<C
 if !exists('g:raven_map_keys') || g:raven_map_keys
     nmap <leader>ro <Plug>RavenOpenJulia
     nmap <leader>ri <Plug>RavenSourceFileJulia
-    nmap <leader>rf <Plug>RavenFunctionJulia
+    nmap <leader>rf <Plug>RavenSendFunctionJulia
     nmap <leader>rc <Plug>RavenClearJulia
     nmap <leader>rw <Plug>RavenSetWorkDirJulia
 endif
