@@ -99,12 +99,12 @@ nnoremap <silent> <Plug>RavenSetWorkDirR :call <SID>RavenSetWorkDirR()<CR>
 
 
 if !exists('g:raven_map_keys') || g:raven_map_keys
-    nmap <leader>ro <Plug>RavenOpenR
-    nmap <leader>ri <Plug>RavenSourceFileR
-    nmap <leader>rf <Plug>RavenSendFunctionR
-    nmap <leader>rh <Plug>RavenHelpPromptR
-    nmap <leader>rc <Plug>RavenClearR
-    nmap <leader>rw <Plug>RavenSetWorkDirR
+    nmap <localleader>ro <Plug>RavenOpenR
+    nmap <localleader>ri <Plug>RavenSourceFileR
+    nmap <localleader>rf <Plug>RavenSendFunctionR
+    nmap <localleader>rh <Plug>RavenHelpPromptR
+    nmap <localleader>rc <Plug>RavenClearR
+    nmap <localleader>rw <Plug>RavenSetWorkDirR
 endif
 
 

@@ -144,6 +144,12 @@ endfunction
 function! RavenOpenPane(dir)
     call system("tmux split-window -" . a:dir . " -p " . g:raven_split_pane_percent)
     let g:raven_pane_id = substitute(system('tmux display-message -p "#D"'), '\n$', '','')
+    if(g:filetype_lang == "R")
+        call RavenOpenR()
+    endif
+    if(g:filetype_lang == "julia")
+        call RavenOpenJulia()
+    endif
     call system("tmux last-pane")
     hide
 endfunction
@@ -155,7 +161,7 @@ endfunction
 
 
 function! s:RavenEscText(text)
-    let esc_text = escape(a:text, '"$;')
+    let esc_text = escape(a:text, '"$;`')
     return(esc_text)
 endfunction
 
@@ -175,7 +181,7 @@ endfunction
 
 
 command! -range=0 -complete=shellcmd -nargs=+ Raven call RavenSendText(<q-args>)
-
+command! RavenPanes call RavenSelectPane()
 
 " need <c-u> to clear selection brackets (i.e., '<,'>) before calls
 nnoremap <silent> <Plug>RavenSend :<c-u> call RavenSend()<CR>
@@ -185,13 +191,12 @@ vnoremap <silent> <Plug>RavenSendSelection :<c-u> call RavenSendSelection()<CR>
 nnoremap <silent> <Plug>RavenSendParagraph :<c-u> call RavenSendParagraph()<CR>
 nnoremap <silent> <Plug>RavenSelectPane :<c-u> call RavenSelectPane()<CR>
 
-
 if !exists('g:raven_map_keys') || g:raven_map_keys
-    nmap <leader>rr  <Plug>RavenSelectPane
-    nmap <leader>rq  <Plug>RavenKillPane
-    nmap <leader>rd  <Plug>RavenSendLine
-    vmap <leader>rs  <Plug>RavenSendSelection
-    nmap <leader>rs  <Plug>RavenSendParagraph
+    nmap <localleader>rr  <Plug>RavenSelectPane
+    nmap <localleader>rq  <Plug>RavenKillPane
+    nmap <localleader>rd  <Plug>RavenSendLine
+    vmap <localleader>rs  <Plug>RavenSendSelection
+    nmap <localleader>rs  <Plug>RavenSendParagraph
 endif
 
 
