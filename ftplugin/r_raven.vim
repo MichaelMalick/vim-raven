@@ -25,14 +25,16 @@ if !exists("*s:RavenHelpPromptR")
         let fun = input('Enter Function: ')
         call inputrestore()
         belowright new
-        execute "read !Rscript -e" . ' "help(' . fun . ')"'
+        execute "read !Rscript -e" . ' "help(' . fun . ', help_type =' . "'text'" . ')"'
         setlocal filetype=r
+        setlocal fileencoding=utf-8
         setlocal bufhidden=wipe buftype=nofile
         setlocal nobuflisted nomodifiable noswapfile nowrap
         nnoremap <buffer> <silent> q :hide<CR>
         call setpos('.', save_cursor)
     endfunction
 endif
+
 
 function! s:RavenOpenR()
     if !exists("g:raven_pane_id")
