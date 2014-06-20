@@ -13,21 +13,26 @@ if g:raven_source_send
 endif
 
 let s:filetype_lang = "R"
-let s:source_current_file = 'source("' . expand('%:p') . '")'
 let s:clear_console = 'system("clear")'
 let s:set_work_directory = 'setwd("' . expand('%:p:h') . '")'
 " SendFunction and RHelp are not lang agnostic
 
 
-function! s:RavenHelpPromptR()
-    let save_cursor = getpos(".")
-    call inputsave()
-    let fun = input('Enter Function: ')
-    call inputrestore()
-    execute "!Rscript -e" . ' "help(' . fun . ')"'
-    call setpos('.', save_cursor)
-endfunction
-
+if !exists("*s:RavenHelpPromptR") 
+    function! s:RavenHelpPromptR()
+        let save_cursor = getpos(".")
+        call inputsave()
+        let fun = input('Enter Function: ')
+        call inputrestore()
+        belowright new
+        execute "read !Rscript -e" . ' "help(' . fun . ')"'
+        setlocal filetype=r
+        setlocal bufhidden=wipe buftype=nofile
+        setlocal nobuflisted nomodifiable noswapfile nowrap
+        nnoremap <buffer> <silent> q :hide<CR>
+        call setpos('.', save_cursor)
+    endfunction
+endif
 
 function! s:RavenOpenR()
     if !exists("g:raven_pane_id")
@@ -84,7 +89,8 @@ function! s:RavenSourceFileR()
         return
     endif
     let save_cursor = getpos(".")
-    call RavenSendText(s:source_current_file)
+    let source_current_file = 'source("' . expand('%:p') . '")'
+    call RavenSendText(source_current_file)
     call setpos('.', save_cursor)
 endfunction
 

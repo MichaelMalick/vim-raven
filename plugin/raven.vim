@@ -57,7 +57,9 @@ function! RavenSendSelection()
         return
     endif
     call s:RavenSaveSelection()
-    if exists("g:source_send_selection")
+    let g:start_line = line("'<")
+    let g:end_line = line("'>")
+    if exists("g:source_send_selection") && g:start_line != g:end_line
         call RavenSendText(g:source_send_selection)
         call s:RavenSendKeys("Enter")
     else
@@ -144,12 +146,6 @@ endfunction
 function! RavenOpenPane(dir)
     call system("tmux split-window -" . a:dir . " -p " . g:raven_split_pane_percent)
     let g:raven_pane_id = substitute(system('tmux display-message -p "#D"'), '\n$', '','')
-    if(g:filetype_lang == "R")
-        call RavenOpenR()
-    endif
-    if(g:filetype_lang == "julia")
-        call RavenOpenJulia()
-    endif
     call system("tmux last-pane")
     hide
 endfunction
