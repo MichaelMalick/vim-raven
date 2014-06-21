@@ -15,25 +15,6 @@ endif
 let s:filetype_lang = "R"
 let s:clear_console = 'system("clear")'
 let s:set_work_directory = 'setwd("' . expand('%:p:h') . '")'
-" SendFunction and RHelp are not lang agnostic
-
-
-if !exists("*s:RavenHelpPromptR") 
-    function! s:RavenHelpPromptR()
-        let save_cursor = getpos(".")
-        call inputsave()
-        let fun = input('Enter Function: ')
-        call inputrestore()
-        belowright new
-        execute "read !Rscript -e" . ' "help(' . fun . ', help_type =' . "'text'" . ')"'
-        setlocal filetype=r
-        setlocal fileencoding=utf-8
-        setlocal bufhidden=wipe buftype=nofile
-        setlocal nobuflisted nomodifiable noswapfile nowrap
-        nnoremap <buffer> <silent> q :hide<CR>
-        call setpos('.', save_cursor)
-    endfunction
-endif
 
 
 function! s:RavenOpenR()
@@ -101,7 +82,6 @@ endfunction
 nnoremap <silent> <Plug>RavenOpenR :call <SID>RavenOpenR()<CR>
 nnoremap <silent> <Plug>RavenSourceFileR :call <SID>RavenSourceFileR()<CR>
 nnoremap <silent> <Plug>RavenSendFunctionR :call <SID>RavenSendFunctionR()<CR>
-nnoremap <silent> <Plug>RavenHelpPromptR :call <SID>RavenHelpPromptR()<CR>
 nnoremap <silent> <Plug>RavenClearR :call <SID>RavenClearR()<CR>
 nnoremap <silent> <Plug>RavenSetWorkDirR :call <SID>RavenSetWorkDirR()<CR>
 
@@ -110,7 +90,6 @@ if !exists('g:raven_map_keys') || g:raven_map_keys
     nmap <localleader>ro <Plug>RavenOpenR
     nmap <localleader>ri <Plug>RavenSourceFileR
     nmap <localleader>rf <Plug>RavenSendFunctionR
-    nmap <localleader>rh <Plug>RavenHelpPromptR
     nmap <localleader>rc <Plug>RavenClearR
     nmap <localleader>rw <Plug>RavenSetWorkDirR
 endif
