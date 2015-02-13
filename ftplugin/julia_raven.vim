@@ -14,6 +14,7 @@ endif
 
 let s:filetype_lang = "julia"
 let s:source_current_file = 'include("' . expand('%:p') . '")'
+let s:reload_current_file = 'reload("' . expand('%:p') . '")'
 let s:clear_console = 'run(`clear`)'
 let s:set_work_directory = 'cd("' . expand('%:p:h') . '")'
 
@@ -72,10 +73,20 @@ function! s:RavenSourceFileJulia()
     call setpos('.', save_cursor)
 endfunction
 
+function! s:RavenReloadFileJulia()
+    if !exists("g:raven_pane_id")
+        echo "No Raven Pane Selected"
+        return
+    endif
+    let save_cursor = getpos(".")
+    call RavenSendText(s:reload_current_file)
+    call setpos('.', save_cursor)
+endfunction
 
 
 nnoremap <silent> <Plug>RavenOpenJulia :call <SID>RavenOpenJulia()<CR>
 nnoremap <silent> <Plug>RavenSourceFileJulia :call <SID>RavenSourceFileJulia()<CR>
+nnoremap <silent> <Plug>RavenReloadFileJulia :call <SID>RavenReloadFileJulia()<CR>
 nnoremap <silent> <Plug>RavenSendFunctionJulia :call <SID>RavenSendFunctionJulia()<CR>
 nnoremap <silent> <Plug>RavenClearJulia :call <SID>RavenClearJulia()<CR>
 nnoremap <silent> <Plug>RavenSetWorkDirJulia :call <SID>RavenSetWorkDirJulia()<CR>
@@ -84,6 +95,7 @@ nnoremap <silent> <Plug>RavenSetWorkDirJulia :call <SID>RavenSetWorkDirJulia()<C
 if !exists('g:raven_map_keys') || g:raven_map_keys
     nmap <localleader>ro <Plug>RavenOpenJulia
     nmap <localleader>ri <Plug>RavenSourceFileJulia
+    nmap <localleader>rj <Plug>RavenReloadFileJulia
     nmap <localleader>rf <Plug>RavenSendFunctionJulia
     nmap <localleader>rc <Plug>RavenClearJulia
     nmap <localleader>rw <Plug>RavenSetWorkDirJulia
