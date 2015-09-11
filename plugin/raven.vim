@@ -4,14 +4,23 @@
 
 
 
-if exists('g:loaded_raven') || &cp || v:version < 700
+if exists('g:raven_loaded') || &cp || v:version < 700
   finish
 endif
 
-let g:loaded_raven = 1
-let g:raven_split_pane_percent = 50
-let g:raven_tmp_file = "/tmp/vim-raven-tmp-file"
-let g:raven_source_send = 1
+let g:raven_loaded = 1
+
+if !exists('g:raven_split_pane_percent')
+    let g:raven_split_pane_percent = 30
+endif
+
+if !exists('g:raven_tmp_file')
+    let g:raven_tmp_file = "/tmp/vim-raven-tmp-file"
+endif
+
+if !exists('g:raven_source_send')
+    let g:raven_source_send = 1
+endif
 
 " -----------------------------------
 " Mapped Function {{{
@@ -189,10 +198,10 @@ nnoremap <silent> <Plug>RavenSelectPane :<c-u> call RavenSelectPane()<CR>
 
 if !exists('g:raven_map_keys') || g:raven_map_keys
     nmap <localleader>rr  <Plug>RavenSelectPane
-    nmap <localleader>rq  <Plug>RavenKillPane
     nmap <localleader>rd  <Plug>RavenSendLine
     vmap <localleader>rs  <Plug>RavenSendSelection
     nmap <localleader>rs  <Plug>RavenSendParagraph
+    nmap <localleader>rq  <Plug>RavenKillPane
 endif
 
 

@@ -45,12 +45,12 @@ support for Windows.
 
 Usage
 =====
-Wether you are running Vim in the terminal or a GUI, you first need to start
+Whether you are running Vim in the terminal or a GUI, you first need to start
 Tmux in the terminal:
 
     tmux new -s mysession
 
-The `:RavePanes` and `:Raven` commands are the core of the plugin. The
+The `:RavenPanes` and `:Raven` commands are the core of the plugin. The
 `:RavenPanes` command takes no arguments and is called like
 
     :RavenPanes
@@ -130,5 +130,5 @@ plugin was designed to include the best features of
 License
 =======
 Raven is [MIT/X11](http://opensource.org/licenses/MIT) licensed.
-Copyright (c) 2014 Michael Malick
+Copyright (c) 2015 Michael Malick
 

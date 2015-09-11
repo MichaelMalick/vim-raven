@@ -3,7 +3,7 @@
 
 
 
-if !g:loaded_raven || &cp || v:version < 700
+if !g:raven_loaded || &cp || v:version < 700
   finish
 endif
 
@@ -108,9 +108,9 @@ if !exists('g:raven_map_keys') || g:raven_map_keys
     nmap <localleader>ro <Plug>RavenOpenR
     nmap <localleader>ri <Plug>RavenSourceFileR
     nmap <localleader>rf <Plug>RavenSendFunctionR
-    nmap <localleader>rm <Plug>RavenSendChunkR
     nmap <localleader>rc <Plug>RavenClearR
     nmap <localleader>rw <Plug>RavenSetWorkDirR
+    nmap <localleader>rm <Plug>RavenSendChunkR
 endif
 
 
