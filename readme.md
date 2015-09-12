@@ -1,5 +1,8 @@
-raven.vim
-=========
+Raven
+=====
+
+*Just another Vim-Tmux plugin.*
+
 Send code or text from vim to R, Julia, Python, or any other REPL running in a
 Tmux session. Raven provides flexibility in choosing/creating a pane to send
 to and a few basic commands to easily interact with the selected pane including
@@ -22,8 +25,8 @@ send code to at any time.
 
 Installation
 ============
-Unless you have a preferred installation method, I recommend installing
-[pathogen][https://github.com/tpope/vim-pathogen] and then simply run:
+To install, I recommend installing
+[pathogen](https://github.com/tpope/vim-pathogen) and then simply run:
 
     cd ~/.vim/bundle
     git clone git://github.com/michaelmalick/vim-raven.git
@@ -32,14 +35,14 @@ To access the help file in vim run:
 
     :Helptags
 
-For the plugin to work you need to have [Tmux](http://tmux.sourceforge.net/)
+For the plugin to work, you need to have [Tmux](http://tmux.sourceforge.net/)
 installed. If you don't have Tmux installed and are running a Mac, I recommend
 first installing [HomeBrew](http://brew.sh/), then simply run:
 
     brew install tmux
 
-To date, the plugin has only been tested using Tmux v1.9a. There is currently no
-support for Windows.
+To date, the plugin has only been tested using Tmux v2.0 on a Mac. There is
+no support for Windows.
 
 
 
@@ -51,7 +54,7 @@ Tmux in the terminal:
     tmux new -s mysession
 
 The `:RavenPanes` and `:Raven` commands are the core of the plugin. The
-`:RavenPanes` command takes no arguments and is called like
+`:RavenPanes` command takes no arguments:
 
     :RavenPanes
 
@@ -63,7 +66,6 @@ send commands to it using the `:Raven` command:
     :Raven ls -a
 
 which sends and runs the 'ls -a' command in the selected pane.
-
 
 
 By default, Raven creates a number of mappings to make sending text in a buffer
@@ -85,12 +87,13 @@ Filetype mappings for R and Julia:
     <localleader>rf  send function definition
     <localleader>rc  clear the selected pane
     <localleader>rw  set working directory to current files directory
-    <localleader>rh  get help for a function (R only)
+    <localleader>rm  send knitr/Rmarkdown chunk (R only)
+    <localleader>rj  reload Julia file (Julia only)
 
 These mappings can be easily changed using (see help doc for list of available
 functions):
 
-    nmap <leader>f  <Plug>RavenSendLine
+    nmap <leader>d  <Plug>RavenSendLine
     nmap <leader>s  <Plug>RavenSendParagraph
     vmap <leader>s  <Plug>RavenSendSelection
 
@@ -101,7 +104,8 @@ You can also map custom commands to send using the `RavenSendText` command:
 A typical R session might go something like this:
   - Open a new Tmux session called newsess: `tmux new -s newsess`
   - Open dev.R in Vim `vim dev.R`
-  - Open a new pane with `<localleader>rr` then hit `1`
+  - Open a new pane with `<localleader>rr` then hit `1` to open a new pane below
+    vim
   - Open R in the new pane `<localleader>ro`
   - Send the current line to R `<localleader>rd`
 
@@ -124,7 +128,6 @@ plugin was designed to include the best features of
 [Slimux](https://github.com/epeli/slimux),
 [Vimux](https://github.com/benmills/vimux), and the
 [Vim-R-Plugin](https://github.com/jcfaria/Vim-R-plugin) plugins.
-
 
 
 License

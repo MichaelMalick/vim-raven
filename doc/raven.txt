@@ -1,0 +1,223 @@
+*raven.txt* Send code to a Tmux pane
+
+
+                         _ __ __ ___   _____ _ __                              ~
+                        | '__/ _` \ \ / / _ \ '_ \                             ~ 
+                        | | | (_| |\ V /  __/ | | |                            ~
+                        |_|  \__,_| \_/ \___|_| |_|                            ~
+                           
+             Send code or text from vim to R, Julia, Python, or 
+                 any other REPL running in a Tmux session
+
+
+================================================================================
+CONTENTS                                                         *RavenContents*
+
+    1. Usage ................ |RavenUsage|
+    2. Mappings ............. |RavenMappings|
+    3. Configurations ....... |RavenConfigurations|
+    4. License .............. |RavenLicense|
+    5. Bugs ................. |RavenBugs|
+    6. Credits .............. |RavenCredits|
+
+
+
+================================================================================
+1: Usage                                                            *RavenUsage*
+
+Wether you are running Vim in the terminal or a GUI, you first need to start
+Tmux in the terminal:
+
+    tmux new -s mysession
+
+
+The :RavenPanes and :Raven commands are the core of the plugin. The :RavenPanes
+command takes no arguments and is called like
+
+    :RavenPanes
+
+This opens a prompt window that lets you select an existing Tmux pane to send
+commands to or lets you create a new vertical or horizontal pane. Once in the
+prompt window there are several hotkeys available:
+    
+    Enter - select a pane
+    q/Esc - quit prompt window
+    v     - have Tmux flash the pane numbers (same as C-b q in Tmux)
+    1     - open a new horizontal pane
+    2     - open a new vertical pane
+    r     - reload the prompt window
+
+The list of panes are in the following format:
+    %2: sess:2.3: ~: mm.local [238x65] (active) (current)
+
+    %2          pane_id (unique identifier)
+    sess:2.3    session_name:window_index.pane_index
+    ~:          window_name
+    mm.local    pane_title
+    [238x65]    [pane_width x pane_height]
+    (active)    indicates which pane the cursor is in
+    (current)   indicates which pane is currently used by Raven
+
+
+Once a pane is selected, send commands to it using the :Raven command:
+
+    :Raven ls -a
+
+which sends and runs the 'ls -a' command in the selected pane.
+
+
+Several other function are available to ease the process of sending text from
+a Vim buffer to the selected pane. The following are not filetype specific:
+
+    :RavenSendLine()       send current line
+    :RavenSendSelection()  send current selection
+    :RavenSendParagraph()  send current paragraph
+    :RavenKillPane()       delete pane linked to Raven (Tmux kills the pane)
+
+
+The following functions are available for the R filetype:
+
+    :RavenOpenR()          open R in selected pane
+    :RavenSourceFileR()    source/include current file
+    :RavenSendFunctionR()  send function definition
+    :RavenClearR()         clear the selected pane
+    :RavenSetWorkDirR()    set working directory to current files directory
+    :RavenSendChunkR()     send knitr/Rmarkdown chunk
+
+
+The following functions are available for the Julia filetype:
+
+    :RavenOpenJulia()          open R/Julia in selected pane
+    :RavenSourceFileJulia()    source/include current file
+    :RavenSendFunctionJulia()  send function definition
+    :RavenClearJulia()         clear the selected pane
+    :RavenSetWorkDirJulia()    set working directory to current files directory
+    :RavenReloadFileJulia()    reload julia file
+
+
+================================================================================
+2: Mappings                                                      *RavenMappings*
+
+By default, Raven creates a number of mappings to make sending text in a buffer
+easier. These can be disabled as described in |RavenConfigurations|.
+
+Global mappings:
+
+    <localleader>rr   open the Raven pane selection window
+    <localleader>rd   send current line
+    <localleader>rs   visual mode: send current selection
+    <localleader>rs   normal mode: send current paragraph
+    <localleader>rq   delete pane linked to raven
+
+
+Filetype mappings for R and Julia:
+
+    <localleader>ro  open R/Julia in selected pane
+    <localleader>ri  source/include current file
+    <localleader>rf  send function definition
+    <localleader>rc  clear the selected pane
+    <localleader>rw  set working directory to current files directory
+    <localleader>rm  send knitr/Rmarkdown chunk (R only)
+    <localleader>rj  reload Julia file (Julia only)
+
+These mappings can be easily changed using:
+
+    nmap <leader>d  <Plug>RavenSendLine
+    nmap <leader>s  <Plug>RavenSendParagraph
+    vmap <leader>s  <Plug>RavenSendSelection
+
+You can also map custom commands to send using the RavenSendText command:
+
+    nmap <silent> <leader>rl :call RavenSendText('ls -a')<CR>
+
+
+
+================================================================================
+3: Configurations                                          *RavenConfigurations*
+
+You can change the following settings to control how Raven works.
+
+
+-------------------------------------------------------------------------------
+3.1 g:raven_split_pane_percent
+default value: 30
+
+Set this to change the size of the new pane that Raven creates. For example,
+
+    let g:raven_split_pane_percent = 30
+
+will open a pane that is a 30% split of the current pane.
+
+
+-------------------------------------------------------------------------------
+3.2 g:raven_tmp_file
+default: "/tmp/vim-raven-tmp-file"
+
+Set this to change the location of the temporary file Raven uses to send
+commands (needs a full path):
+
+    let g:raven_tmp_file = "/Users/malick/Desktop/tmp-file"
+
+
+-------------------------------------------------------------------------------
+3.3 g:raven_map_keys
+default: 1
+
+Set this to 0 to disable all Raven defined key mappings
+
+    let g:raven_map_keys = 0
+
+
+-------------------------------------------------------------------------------
+3.4 g:raven_source_send
+default: 0
+
+For R and Julia filetypes only. If set to 0 (default) sent selections,
+paragraphs and functions will be sent line wise, that is, each line will appear
+in the selected pane. This can be slow if sending a lot of lines. If set to 1
+sent selections, paragraphs, and functions are sent using the source() function
+in R or the include() function in Julia. This is a much faster way to send large
+chunks of code, however, the sent code is not viewable. For R, the source()
+functions echo argument is set to TRUE. Setting this does not affect how code
+from other filetypes is sent (it is always sent line wise)
+
+    let g:raven_source_send = 1
+
+
+-------------------------------------------------------------------------------
+3.5 g:raven_loaded
+default: non-existent
+
+Set this to 0 to disable the Raven plugin
+
+    let g:raven_loaded = 0
+
+
+
+================================================================================
+4: License                                                        *RavenLicense*
+
+Raven is MIT/X11 licensed.
+
+
+
+================================================================================
+4: Bugs                                                              *RavenBugs*
+
+If you find a bug please post it on the issue tracker:
+http://github.com/michaelmalick/vim-raven/issues/
+
+
+
+================================================================================
+5. Credits                                                        *RavenCredits*
+
+Inspiration and ideas for this plugin were borrowed from several other vim
+plugins including:
+
+  - slimux.vim
+  - vimux.vim
+  - clam.vim
+
+
+
