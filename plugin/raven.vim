@@ -100,6 +100,20 @@ function! RavenSendParagraph()
     call setpos('.', save_cursor)
 endfunction
 
+function! RavenSendFold()
+    if !exists("g:raven_pane_id")
+        echo "No Raven Pane Selected"
+        return
+    endif
+    let save_cursor = getpos(".")
+    call search('{{{', 'bc')
+    normal! V
+    call search('{')
+    normal! %
+    call RavenSendSelection()
+    execute "normal! \<Esc>"
+    call setpos('.', save_cursor)
+endfunction
 
 function! RavenKillPane()
     if !exists("g:raven_pane_id")
@@ -130,7 +144,7 @@ endfunction
 
 
 function! RavenPickPane()
-    call RavenPaneMatch() 
+    call RavenPaneMatch()
     if len(s:pane_match) == 0
         echo "Please select a pane with enter or exit with 'q'"
         return
@@ -194,6 +208,7 @@ nnoremap <silent> <Plug>RavenKillPane :<c-u> call RavenKillPane()<CR>
 nnoremap <silent> <Plug>RavenSendLine :<c-u> call RavenSendLine()<CR>
 vnoremap <silent> <Plug>RavenSendSelection :<c-u> call RavenSendSelection()<CR>
 nnoremap <silent> <Plug>RavenSendParagraph :<c-u> call RavenSendParagraph()<CR>
+nnoremap <silent> <Plug>RavenSendFold :<c-u> call RavenSendFold()<CR>
 nnoremap <silent> <Plug>RavenSelectPane :<c-u> call RavenSelectPane()<CR>
 
 if !exists('g:raven_map_keys') || g:raven_map_keys
@@ -201,6 +216,7 @@ if !exists('g:raven_map_keys') || g:raven_map_keys
     nmap <localleader>rd  <Plug>RavenSendLine
     vmap <localleader>rs  <Plug>RavenSendSelection
     nmap <localleader>rs  <Plug>RavenSendParagraph
+    nmap <localleader>rx  <Plug>RavenSendFold
     nmap <localleader>rq  <Plug>RavenKillPane
 endif
 
