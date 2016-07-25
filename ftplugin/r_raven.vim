@@ -56,7 +56,7 @@ function! s:RavenSendFunctionR()
         return
     endif
     let save_cursor = getpos(".")
-    call search('function(', 'bc')
+    call search('<-\s*function\s*(', 'bc')
     normal! V
     call search('{')
     normal! %
