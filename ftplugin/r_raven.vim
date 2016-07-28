@@ -3,7 +3,7 @@
 
 
 
-if !g:raven_loaded || &cp || v:version < 700
+if !g:loaded_raven || &cp || v:version < 700
   finish
 endif
 

@@ -4,11 +4,11 @@
 
 
 
-if exists('g:raven_loaded') || &cp || v:version < 700 || !executable('tmux')
+if exists('g:loaded_raven') || &cp || v:version < 700 || !executable('tmux')
   finish
 endif
 
-let g:raven_loaded = 1
+let g:loaded_raven = 1
 
 if !exists('g:raven_split_pane_percent')
     let g:raven_split_pane_percent = 30
