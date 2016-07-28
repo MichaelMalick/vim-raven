@@ -66,12 +66,13 @@ Once a pane is selected, send commands to it using the :Raven command:
 which sends and runs the 'ls -a' command in the selected pane.
 
 
-Several other function are available to ease the process of sending text from
+Several other functions are available to ease the process of sending text from
 a Vim buffer to the selected pane. The following are not filetype specific:
 
     :RavenSendLine()       send current line
     :RavenSendSelection()  send current selection
     :RavenSendParagraph()  send current paragraph
+    :RavenSendFold()       send text inside a manual fold ({{{ }}} mark fold)
     :RavenKillPane()       delete pane linked to Raven (Tmux kills the pane)
 
 
@@ -107,6 +108,7 @@ Global mappings:
     <localleader>rd   send current line
     <localleader>rs   visual mode: send current selection
     <localleader>rs   normal mode: send current paragraph
+    <localleader>rx   send text inside a manual fold ({{{ }}} mark fold)
     <localleader>rq   delete pane linked to raven
 
 
@@ -151,12 +153,12 @@ will open a pane that is a 30% split of the current pane.
 
 -------------------------------------------------------------------------------
 3.2 g:raven_tmp_file
-default: "/tmp/vim-raven-tmp-file"
+default: file output from tmpname()
 
 Set this to change the location of the temporary file Raven uses to send
 commands (needs a full path):
 
-    let g:raven_tmp_file = "/Users/malick/Desktop/tmp-file"
+    let g:raven_tmp_file = "/tmp/vim-raven-tmp-file"
 
 
 -------------------------------------------------------------------------------
@@ -173,8 +175,8 @@ Set this to 0 to disable all Raven defined key mappings
 default: 0
 
 For R and Julia filetypes only. If set to 0 (default) sent selections,
-paragraphs and functions will be sent line wise, that is, each line will appear
-in the selected pane. This can be slow if sending a lot of lines. If set to 1
+paragraphs, and functions will be sent line wise, that is, each line will appear
+in the selected pane. This can be slow if sending a lot of lines. If set to 1,
 sent selections, paragraphs, and functions are sent using the source() function
 in R or the include() function in Julia. This is a much faster way to send large
 chunks of code, however, the sent code is not viewable. For R, the source()
@@ -185,12 +187,12 @@ from other filetypes is sent (it is always sent line wise)
 
 
 -------------------------------------------------------------------------------
-3.5 g:raven_loaded
+3.5 g:loaded_raven
 default: non-existent
 
 Set this to 0 to disable the Raven plugin
 
-    let g:raven_loaded = 0
+    let g:loaded_raven = 0
 
 
 

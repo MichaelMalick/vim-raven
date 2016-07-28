@@ -19,7 +19,7 @@ if !exists('g:raven_tmp_file')
 endif
 
 if !exists('g:raven_source_send')
-    let g:raven_source_send = 1
+    let g:raven_source_send = 0
 endif
 
 " -----------------------------------

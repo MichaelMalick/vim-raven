@@ -13,7 +13,7 @@ filetypes is possible with both R and Julia supported out of the box. The plugin
 works with both the terminal and GUI versions of Vim. When Vim is running inside
 the terminal, code is sent to another Tmux pane (can be in a different window or
 even session as Vim). When Vim is running from a GUI, code is sent to a Tmux
-pane running in the terminal. 
+pane running in the terminal.
 
 You can choose to have Raven open a pane in a horizontal or vertical orientation
 or you can select an existing pane from a list of all panes across all Tmux
@@ -41,8 +41,7 @@ first installing [HomeBrew](http://brew.sh/), then simply run:
 
     brew install tmux
 
-To date, the plugin has only been tested using Tmux v2.0 on a Mac. There is
-no support for Windows.
+To date, the plugin has only been tested on Mac OSX.
 
 
 
@@ -78,6 +77,7 @@ Global mappings:
     <localleader>rd   send current line
     <localleader>rs   visual mode: send current selection
     <localleader>rs   normal mode: send current paragraph
+    <localleader>rx   send text inside a manual fold (inside {{{ }}} markers)
     <localleader>rq   delete pane linked to raven
 
 Filetype mappings for R and Julia:
@@ -113,7 +113,7 @@ A typical R session might go something like this:
 Rationale
 =========
 There are many Vim-Tmux integration plugins and the Vim-R-Plugin provides
-support for R, so why create another plugin? 
+support for R, so why create another plugin?
 
 The majority of the Vim-Tmux integration plugins (including the Vim-R-Plugin) do
 not provide flexibility about selecting which Tmux pane to send to. That is,
@@ -133,5 +133,5 @@ plugin was designed to include the best features of
 License
 =======
 Raven is [MIT/X11](http://opensource.org/licenses/MIT) licensed.
-Copyright (c) 2015 Michael Malick
+Copyright (c) 2015-2016 Michael Malick
 
