@@ -4,7 +4,7 @@
 
 
 
-if exists('g:raven_loaded') || &cp || v:version < 700
+if exists('g:raven_loaded') || &cp || v:version < 700 || !executable('tmux')
   finish
 endif
 
