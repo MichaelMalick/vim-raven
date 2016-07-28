@@ -136,7 +136,7 @@ function! RavenSendText(text)
         echo "No Raven Pane Selected"
         return
     endif
-    let send_text = '"' . s:RavenEscText(a:text) . '"'
+    let send_text = shellescape(a:text)
     " include the literal flag so Tmux keywords are not looked up
     call system("tmux send-keys -l -t " . g:raven_pane_id . " " . send_text)
     call s:RavenSendKeys("Enter")
@@ -176,12 +176,6 @@ endfunction
 
 function! s:RavenSendKeys(keys)
     call system("tmux send-keys -t " . g:raven_pane_id . " " . a:keys)
-endfunction
-
-
-function! s:RavenEscText(text)
-    let esc_text = escape(a:text, '"$;`')
-    return(esc_text)
 endfunction
 
 
