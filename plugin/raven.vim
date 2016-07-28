@@ -15,7 +15,7 @@ if !exists('g:raven_split_pane_percent')
 endif
 
 if !exists('g:raven_tmp_file')
-    let g:raven_tmp_file = "/tmp/vim-raven-tmp-file"
+    let g:raven_tmp_file = tempname()
 endif
 
 if !exists('g:raven_source_send')
