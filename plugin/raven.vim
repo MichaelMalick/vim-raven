@@ -93,11 +93,11 @@ endfunction
 
 
 function! RavenSendParagraph()
-    let save_cursor = getpos(".")
+    let l:win_view = winsaveview()
     exe "normal! vip"
     call RavenSendSelection()
     exe "normal! \<Esc>"
-    call setpos('.', save_cursor)
+    call winrestview(l:win_view)
 endfunction
 
 function! RavenSendFold()
@@ -105,14 +105,14 @@ function! RavenSendFold()
         echo "No Raven Pane Selected"
         return
     endif
-    let save_cursor = getpos(".")
+    let l:win_view = winsaveview()
     call search('{{{', 'bc')
     normal! V
     call search('{')
     normal! %
     call RavenSendSelection()
     execute "normal! \<Esc>"
-    call setpos('.', save_cursor)
+    call winrestview(l:win_view)
 endfunction
 
 function! RavenKillPane()
