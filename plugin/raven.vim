@@ -21,6 +21,10 @@ if !exists('g:raven_source_send')
     let g:raven_source_send = 0
 endif
 
+if !exists('g:raven_map_keys')
+    let g:raven_map_keys = 1
+endif
+
 
 command! -range=0 -complete=shellcmd -nargs=+ Raven call raven#send_text(<q-args>)
 command! RavenPanes call raven#pane_select()
@@ -33,7 +37,7 @@ nnoremap <silent> <Plug>RavenSendParagraph :<c-u> call raven#send_paragraph()<CR
 nnoremap <silent> <Plug>RavenSendFold :<c-u> call raven#send_fold()<CR>
 nnoremap <silent> <Plug>RavenSelectPane :<c-u> call raven#pane_select()<CR>
 
-if !exists('g:raven_map_keys') || g:raven_map_keys
+if g:raven_map_keys
     nmap <localleader>rr  <Plug>RavenSelectPane
     nmap <localleader>rd  <Plug>RavenSendLine
     vmap <localleader>rs  <Plug>RavenSendSelection

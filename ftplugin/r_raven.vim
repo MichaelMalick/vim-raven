@@ -95,7 +95,7 @@ nnoremap <silent> <Plug>RavenSendChunkR :call <SID>RavenSendChunkR()<CR>
 nnoremap <silent> <Plug>RavenClearR :call <SID>RavenClearR()<CR>
 nnoremap <silent> <Plug>RavenSetWorkDirR :call <SID>RavenSetWorkDirR()<CR>
 
-if !exists('g:raven_map_keys') || g:raven_map_keys
+if g:raven_map_keys
     nmap <localleader>ro <Plug>RavenOpenR
     nmap <localleader>ri <Plug>RavenSourceFileR
     nmap <localleader>rf <Plug>RavenSendFunctionR

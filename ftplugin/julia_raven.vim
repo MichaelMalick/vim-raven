@@ -87,7 +87,7 @@ nnoremap <silent> <Plug>RavenSendFunctionJulia :call <SID>RavenSendFunctionJulia
 nnoremap <silent> <Plug>RavenClearJulia :call <SID>RavenClearJulia()<CR>
 nnoremap <silent> <Plug>RavenSetWorkDirJulia :call <SID>RavenSetWorkDirJulia()<CR>
 
-if !exists('g:raven_map_keys') || g:raven_map_keys
+if g:raven_map_keys
     nmap <localleader>ro <Plug>RavenOpenJulia
     nmap <localleader>ri <Plug>RavenSourceFileJulia
     nmap <localleader>rf <Plug>RavenSendFunctionJulia
