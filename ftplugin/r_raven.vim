@@ -19,7 +19,7 @@ let s:set_work_directory = 'setwd("' . expand('%:p:h') . '")'
 
 function! s:RavenOpenR()
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane Selected"
+        echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
     let save_cursor = getpos(".")
@@ -30,7 +30,7 @@ endfunction
 
 function! s:RavenSetWorkDirR()
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane Selected"
+        echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
     let save_cursor = getpos(".")
@@ -41,7 +41,7 @@ endfunction
 
 function! s:RavenClearR()
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane Selected"
+        echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
     let save_cursor = getpos(".")
@@ -52,7 +52,7 @@ endfunction
 
 function! s:RavenSendFunctionR()
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane Selected"
+        echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
     let save_cursor = getpos(".")
@@ -68,7 +68,7 @@ endfunction
 
 function! s:RavenSendChunkR()
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane Selected"
+        echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
     let save_cursor = getpos(".")
@@ -85,7 +85,7 @@ endfunction
 
 function! s:RavenSourceFileR()
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane Selected"
+        echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
     let save_cursor = getpos(".")

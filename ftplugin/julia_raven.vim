@@ -21,7 +21,7 @@ let s:set_work_directory = 'cd("' . expand('%:p:h') . '")'
 
 function! s:RavenOpenJulia()
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane Selected"
+        echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
     let save_cursor = getpos(".")
@@ -32,7 +32,7 @@ endfunction
 
 function! s:RavenSetWorkDirJulia()
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane Selected"
+        echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
     let save_cursor = getpos(".")
@@ -43,7 +43,7 @@ endfunction
 
 function! s:RavenClearJulia()
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane Selected"
+        echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
     let save_cursor = getpos(".")
@@ -54,7 +54,7 @@ endfunction
 
 function! s:RavenSendFunctionJulia()
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane Selected"
+        echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
     let save_cursor = getpos(".")
@@ -69,7 +69,7 @@ endfunction
 
 function! s:RavenSourceFileJulia()
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane Selected"
+        echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
     let save_cursor = getpos(".")
@@ -79,7 +79,7 @@ endfunction
 
 function! s:RavenReloadFileJulia()
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane Selected"
+        echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
     let save_cursor = getpos(".")

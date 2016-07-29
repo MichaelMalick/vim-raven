@@ -28,7 +28,7 @@ endif
 function! RavenSelectPane()
     let session_number = system('tmux display-message -p "#S"')
     if len(session_number) > 5
-        echo "Tmux Is Not Currently Running"
+        echohl WarningMsg | echo "Tmux is not currently running" | echohl None
         return
     endif
     belowright new
@@ -62,7 +62,7 @@ endfunction
 
 function! RavenSendSelection()
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane Selected"
+        echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
     call s:RavenSaveSelection()
@@ -82,7 +82,7 @@ endfunction
 
 function! RavenSendLine()
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane Selected"
+        echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
     let save_cursor = getpos(".")
@@ -94,7 +94,7 @@ endfunction
 
 function! RavenSendParagraph()
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane Selected"
+        echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
     let l:win_view = winsaveview()
@@ -106,7 +106,7 @@ endfunction
 
 function! RavenSendFold()
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane Selected"
+        echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
     let l:win_view = winsaveview()
@@ -121,7 +121,7 @@ endfunction
 
 function! RavenKillPane()
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane To Kill"
+        echohl WarningMsg | echo "No raven pane to kill" | echohl None
         return
     endif
     call system("tmux kill-pane -t " . g:raven_pane_id)
@@ -137,7 +137,7 @@ endfunction
 " -----------------------------------
 function! RavenSendText(text)
     if !exists("g:raven_pane_id")
-        echo "No Raven Pane Selected"
+        echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
     let send_text = shellescape(a:text)
