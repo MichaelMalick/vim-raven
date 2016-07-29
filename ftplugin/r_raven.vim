@@ -2,14 +2,12 @@
 " Author: Michael Malick <malickmj@gmail.com>
 
 
-
 if !g:loaded_raven || &cp || v:version < 700
   finish
 endif
 
-
 if g:raven_source_send
-    let g:source_send_selection = 'source("' . g:raven_tmp_file . '" , echo = TRUE)'
+    let g:raven_source_command = 'source("' . g:raven_tmp_file . '" , echo = TRUE)'
 endif
 
 let s:filetype_lang = "R"
@@ -23,10 +21,9 @@ function! s:RavenOpenR()
         return
     endif
     let save_cursor = getpos(".")
-    call RavenSendText(s:filetype_lang)
+    call raven#send_text(s:filetype_lang)
     call setpos('.', save_cursor)
 endfunction
-
 
 function! s:RavenSetWorkDirR()
     if !exists("g:raven_pane_id")
@@ -34,10 +31,9 @@ function! s:RavenSetWorkDirR()
         return
     endif
     let save_cursor = getpos(".")
-    call RavenSendText(s:set_work_directory)
+    call raven#send_text(s:set_work_directory)
     call setpos('.', save_cursor)
 endfunction
-
 
 function! s:RavenClearR()
     if !exists("g:raven_pane_id")
@@ -45,10 +41,9 @@ function! s:RavenClearR()
         return
     endif
     let save_cursor = getpos(".")
-    call RavenSendText(s:clear_console)
+    call raven#send_text(s:clear_console)
     call setpos('.', save_cursor)
 endfunction
-
 
 function! s:RavenSendFunctionR()
     if !exists("g:raven_pane_id")
@@ -60,11 +55,10 @@ function! s:RavenSendFunctionR()
     normal! V
     call search('{')
     normal! %
-    call RavenSendSelection()
-    execute "normal! \<Esc>"
+    call raven#send_selection()
+    exe "normal! \<Esc>"
     call setpos('.', save_cursor)
 endfunction
-
 
 function! s:RavenSendChunkR()
     if !exists("g:raven_pane_id")
@@ -77,11 +71,10 @@ function! s:RavenSendChunkR()
     normal! V
     call search('```')
     normal! k
-    call RavenSendSelection()
-    execute "normal! \<Esc>"
+    call raven#send_selection()
+    exe "normal! \<Esc>"
     call setpos('.', save_cursor)
 endfunction
-
 
 function! s:RavenSourceFileR()
     if !exists("g:raven_pane_id")
@@ -90,10 +83,9 @@ function! s:RavenSourceFileR()
     endif
     let save_cursor = getpos(".")
     let source_current_file = 'source("' . expand('%:p') . '")'
-    call RavenSendText(source_current_file)
+    call raven#send_text(source_current_file)
     call setpos('.', save_cursor)
 endfunction
-
 
 
 nnoremap <silent> <Plug>RavenOpenR :call <SID>RavenOpenR()<CR>
@@ -102,7 +94,6 @@ nnoremap <silent> <Plug>RavenSendFunctionR :call <SID>RavenSendFunctionR()<CR>
 nnoremap <silent> <Plug>RavenSendChunkR :call <SID>RavenSendChunkR()<CR>
 nnoremap <silent> <Plug>RavenClearR :call <SID>RavenClearR()<CR>
 nnoremap <silent> <Plug>RavenSetWorkDirR :call <SID>RavenSetWorkDirR()<CR>
-
 
 if !exists('g:raven_map_keys') || g:raven_map_keys
     nmap <localleader>ro <Plug>RavenOpenR
@@ -113,6 +104,3 @@ if !exists('g:raven_map_keys') || g:raven_map_keys
     nmap <localleader>rm <Plug>RavenSendChunkR
 endif
 
-
-
-" vim:fdm=marker

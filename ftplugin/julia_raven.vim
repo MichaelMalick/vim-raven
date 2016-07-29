@@ -2,19 +2,15 @@
 " Author: Michael Malick <malickmj@gmail.com>
 
 
-
 if !g:loaded_raven || &cp || v:version < 700
   finish
 endif
 
-
 if g:raven_source_send
-    let g:source_send_selection = 'include("' . g:raven_tmp_file . '")'
+    let g:raven_source_command = 'include("' . g:raven_tmp_file . '")'
 endif
 
 let s:filetype_lang = "julia"
-" let s:source_current_file = 'include("' . expand('%:p') . '")'
-" let s:reload_current_file = 'reload("' . expand('%:p') . '")'
 let s:clear_console = 'run(`clear`)'
 let s:set_work_directory = 'cd("' . expand('%:p:h') . '")'
 
@@ -25,10 +21,9 @@ function! s:RavenOpenJulia()
         return
     endif
     let save_cursor = getpos(".")
-    call RavenSendText(s:filetype_lang)
+    call raven#send_text(s:filetype_lang)
     call setpos('.', save_cursor)
 endfunction
-
 
 function! s:RavenSetWorkDirJulia()
     if !exists("g:raven_pane_id")
@@ -36,10 +31,9 @@ function! s:RavenSetWorkDirJulia()
         return
     endif
     let save_cursor = getpos(".")
-    call RavenSendText(s:set_work_directory)
+    call raven#send_text(s:set_work_directory)
     call setpos('.', save_cursor)
 endfunction
-
 
 function! s:RavenClearJulia()
     if !exists("g:raven_pane_id")
@@ -47,10 +41,9 @@ function! s:RavenClearJulia()
         return
     endif
     let save_cursor = getpos(".")
-    call RavenSendText(s:clear_console)
+    call raven#send_text(s:clear_console)
     call setpos('.', save_cursor)
 endfunction
-
 
 function! s:RavenSendFunctionJulia()
     if !exists("g:raven_pane_id")
@@ -61,11 +54,10 @@ function! s:RavenSendFunctionJulia()
     call search('function', 'bc')
     normal! ^V
     normal! %
-    call RavenSendSelection()
-    execute "normal! \<Esc>"
+    call raven#send_selection()
+    exe "normal! \<Esc>"
     call setpos('.', save_cursor)
 endfunction
-
 
 function! s:RavenSourceFileJulia()
     if !exists("g:raven_pane_id")
@@ -73,7 +65,7 @@ function! s:RavenSourceFileJulia()
         return
     endif
     let save_cursor = getpos(".")
-    call RavenSendText('include("' . expand('%:p') . '")')
+    call raven#send_text('include("' . expand('%:p') . '")')
     call setpos('.', save_cursor)
 endfunction
 
@@ -83,7 +75,7 @@ function! s:RavenReloadFileJulia()
         return
     endif
     let save_cursor = getpos(".")
-    call RavenSendText('reload("' . expand('%:p') . '")')
+    call raven#send_text('reload("' . expand('%:p') . '")')
     call setpos('.', save_cursor)
 endfunction
 
@@ -95,7 +87,6 @@ nnoremap <silent> <Plug>RavenSendFunctionJulia :call <SID>RavenSendFunctionJulia
 nnoremap <silent> <Plug>RavenClearJulia :call <SID>RavenClearJulia()<CR>
 nnoremap <silent> <Plug>RavenSetWorkDirJulia :call <SID>RavenSetWorkDirJulia()<CR>
 
-
 if !exists('g:raven_map_keys') || g:raven_map_keys
     nmap <localleader>ro <Plug>RavenOpenJulia
     nmap <localleader>ri <Plug>RavenSourceFileJulia
@@ -104,8 +95,4 @@ if !exists('g:raven_map_keys') || g:raven_map_keys
     nmap <localleader>rw <Plug>RavenSetWorkDirJulia
     nmap <localleader>rj <Plug>RavenReloadFileJulia
 endif
-
-
-
-" vim:fdm=marker
 

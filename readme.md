@@ -97,9 +97,9 @@ functions):
     nmap <leader>s  <Plug>RavenSendParagraph
     vmap <leader>s  <Plug>RavenSendSelection
 
-You can also map custom commands to send using the `RavenSendText` command:
+You can also map custom commands to send using the `Raven` command:
 
-    nmap <silent> <leader>rl :call RavenSendText('ls -a')<CR>
+    nmap <silent> <leader>rl :Raven ls -a<CR>
 
 A typical R session might go something like this:
   - Open a new Tmux session called newsess: `tmux new -s newsess`
