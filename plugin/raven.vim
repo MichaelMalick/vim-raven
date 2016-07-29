@@ -93,6 +93,10 @@ endfunction
 
 
 function! RavenSendParagraph()
+    if !exists("g:raven_pane_id")
+        echo "No Raven Pane Selected"
+        return
+    endif
     let l:win_view = winsaveview()
     exe "normal! vip"
     call RavenSendSelection()

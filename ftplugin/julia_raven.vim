@@ -53,6 +53,10 @@ endfunction
 
 
 function! s:RavenSendFunctionJulia()
+    if !exists("g:raven_pane_id")
+        echo "No Raven Pane Selected"
+        return
+    endif
     let save_cursor = getpos(".")
     call search('function', 'bc')
     normal! ^V
