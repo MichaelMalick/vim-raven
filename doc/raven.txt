@@ -108,7 +108,7 @@ Global mappings:
     <localleader>rd   send current line
     <localleader>rs   visual mode: send current selection
     <localleader>rs   normal mode: send current paragraph
-    <localleader>rx   send text inside a manual fold ({{{ }}} mark fold)
+    <localleader>rz   send text inside a manual fold ({{{ }}} mark fold)
     <localleader>rq   delete pane linked to raven
 
 

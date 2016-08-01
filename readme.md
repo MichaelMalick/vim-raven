@@ -77,7 +77,7 @@ Global mappings:
     <localleader>rd   send current line
     <localleader>rs   visual mode: send current selection
     <localleader>rs   normal mode: send current paragraph
-    <localleader>rx   send text inside a manual fold (inside {{{ }}} markers)
+    <localleader>rz   send text inside a manual fold (inside {{{ }}} markers)
     <localleader>rq   delete pane linked to raven
 
 Filetype mappings for R and Julia:

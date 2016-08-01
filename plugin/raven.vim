@@ -42,7 +42,7 @@ if g:raven_map_keys
     nmap <localleader>rd  <Plug>RavenSendLine
     vmap <localleader>rs  <Plug>RavenSendSelection
     nmap <localleader>rs  <Plug>RavenSendParagraph
-    nmap <localleader>rx  <Plug>RavenSendFold
+    nmap <localleader>rz  <Plug>RavenSendFold
     nmap <localleader>rq  <Plug>RavenKillPane
 endif
 
