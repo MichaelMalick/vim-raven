@@ -31,13 +31,30 @@ function! raven#send_fold()
         echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
+    let l:startpos = getpos('.')
     let l:win_view = winsaveview()
-    call search('{{{', 'bc')
-    normal! V
-    call search('{')
-    normal! %
-    call raven#send_selection()
-    exe "normal! \<Esc>"
+    let l:found = search('{{{', 'nbcW', 1)
+    if !l:found
+        echo "Not inside a fold"
+        return
+    else
+        call search('{{{', 'bc')
+        let l:foldstart = getpos('.')
+        normal! %
+        let l:foldend = getpos('.')
+        if l:startpos[1] < l:foldstart[1] || l:startpos[1] > l:foldend[1]
+            echo "Not inside a fold"
+            call setpos('.', l:startpos)
+            call winrestview(l:win_view)
+            return
+        else
+            call setpos('.', l:foldstart)
+            normal! V
+            call setpos('.', l:foldend)
+            call raven#send_selection()
+            exe "normal! \<Esc>"
+        endif
+    endif
     call winrestview(l:win_view)
 endfunction
 
