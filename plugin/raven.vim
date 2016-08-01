@@ -38,11 +38,11 @@ nnoremap <silent> <Plug>RavenSendFold :<c-u> call raven#send_fold()<CR>
 nnoremap <silent> <Plug>RavenSelectPane :<c-u> call raven#pane_select()<CR>
 
 if g:raven_map_keys
-    nmap <localleader>rr  <Plug>RavenSelectPane
-    nmap <localleader>rd  <Plug>RavenSendLine
-    vmap <localleader>rs  <Plug>RavenSendSelection
-    nmap <localleader>rs  <Plug>RavenSendParagraph
-    nmap <localleader>rz  <Plug>RavenSendFold
-    nmap <localleader>rq  <Plug>RavenKillPane
+    nmap <leader>rr  <Plug>RavenSelectPane
+    nmap <leader>rd  <Plug>RavenSendLine
+    vmap <leader>rs  <Plug>RavenSendSelection
+    nmap <leader>rs  <Plug>RavenSendParagraph
+    nmap <leader>rz  <Plug>RavenSendFold
+    nmap <leader>rq  <Plug>RavenKillPane
 endif
 
