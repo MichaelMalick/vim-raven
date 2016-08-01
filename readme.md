@@ -73,12 +73,12 @@ easier. These can be disable by putting `let g:raven_map_keys = 0` in your
 
 Global mappings:
 
-    <localleader>rr   open the Raven pane selection window
-    <localleader>rd   send current line
-    <localleader>rs   visual mode: send current selection
-    <localleader>rs   normal mode: send current paragraph
-    <localleader>rz   send text inside a manual fold (inside {{{ }}} markers)
-    <localleader>rq   delete pane linked to raven
+    <leader>rr   open the Raven pane selection window
+    <leader>rd   send current line
+    <leader>rs   visual mode: send current selection
+    <leader>rs   normal mode: send current paragraph
+    <leader>rz   send text inside a manual fold (inside {{{ }}} markers)
+    <leader>rq   delete pane linked to raven
 
 Filetype mappings for R and Julia:
 
