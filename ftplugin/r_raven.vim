@@ -50,14 +50,33 @@ function! s:RavenSendFunctionR()
         echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
-    let save_cursor = getpos(".")
-    call search('<-\s*function\s*(', 'bc')
-    normal! V
-    call search('{')
-    normal! %
-    call raven#send_selection()
-    exe "normal! \<Esc>"
-    call setpos('.', save_cursor)
+    let l:startpos = getpos('.')
+    let l:win_view = winsaveview()
+    let l:found = search('<-\s*function\s*(', 'nbcW', 1)
+    if !l:found
+        echo "Not inside a function"
+        return
+    else
+        call search('<-\s*function\s*(', 'bc')
+        normal! ^
+        let l:funstart = getpos('.')
+        call search('{')
+        normal! %
+        let l:funend = getpos('.')
+        if l:startpos[1] < l:funstart[1] || l:startpos[1] > l:funend[1]
+            echo "Not inside a function"
+            call setpos('.', l:startpos)
+            call winrestview(l:win_view)
+            return
+        else
+            call setpos('.', l:funstart)
+            normal! v
+            call setpos('.', l:funend)
+            call raven#send_selection()
+            exe "normal! \<Esc>"
+        endif
+    endif
+    call winrestview(l:win_view)
 endfunction
 
 function! s:RavenSendChunkR()
