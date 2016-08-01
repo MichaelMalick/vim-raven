@@ -39,7 +39,7 @@ nnoremap <silent> <Plug>RavenSelectPane :<c-u> call raven#pane_select()<CR>
 
 if g:raven_map_keys
     nmap <leader>rr  <Plug>RavenSelectPane
-    nmap <leader>rd  <Plug>RavenSendLine
+    nmap <leader>rl  <Plug>RavenSendLine
     vmap <leader>rs  <Plug>RavenSendSelection
     nmap <leader>rs  <Plug>RavenSendParagraph
     nmap <leader>rz  <Plug>RavenSendFold
