@@ -84,15 +84,35 @@ function! s:RavenSendChunkR()
         echohl WarningMsg | echo "No tmux pane selected" | echohl None
         return
     endif
-    let save_cursor = getpos(".")
-    call search('```', 'bc')
-    normal! j
-    normal! V
-    call search('```')
-    normal! k
-    call raven#send_selection()
-    exe "normal! \<Esc>"
-    call setpos('.', save_cursor)
+    let l:startpos = getpos('.')
+    let l:win_view = winsaveview()
+    let l:found = search('```', 'nbcW', 1)
+    if !l:found
+        echo "Not inside a chunk"
+        return
+    else
+        call search('```', 'bc')
+        let l:chunkstart = getpos('.')
+        normal! j
+        let l:chunkstartin = getpos('.')
+        call search('```')
+        let l:chunkend = getpos('.')
+        normal! k
+        let l:chunkendin = getpos('.')
+        if l:startpos[1] < l:chunkstart[1] || l:startpos[1] > l:chunkend[1]
+            echo "Not inside a chunk"
+            call setpos('.', l:startpos)
+            call winrestview(l:win_view)
+            return
+        else
+            call setpos('.', l:chunkstartin)
+            normal! V
+            call setpos('.', l:chunkendin)
+            call raven#send_selection()
+            exe "normal! \<Esc>"
+        endif
+    endif
+    call winrestview(l:win_view)
 endfunction
 
 function! s:RavenSourceFileR()
