@@ -105,7 +105,7 @@ easier. These can be disabled as described in |RavenConfigurations|.
 Global mappings:
 
     <leader>rr   open the Raven pane selection window
-    <leader>rd   send current line
+    <leader>rl   send current line
     <leader>rs   visual mode: send current selection
     <leader>rs   normal mode: send current paragraph
     <leader>rz   send text inside a manual fold ({{{ }}} mark fold)

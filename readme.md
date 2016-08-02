@@ -74,7 +74,7 @@ easier. These can be disable by putting `let g:raven_map_keys = 0` in your
 Global mappings:
 
     <leader>rr   open the Raven pane selection window
-    <leader>rd   send current line
+    <leader>rl   send current line
     <leader>rs   visual mode: send current selection
     <leader>rs   normal mode: send current paragraph
     <leader>rz   send text inside a manual fold (inside {{{ }}} markers)
